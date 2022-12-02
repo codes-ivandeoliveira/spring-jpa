@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Profile;
 import com.educandoweb.springjpa.entities.Category;
 import com.educandoweb.springjpa.entities.Order;
 import com.educandoweb.springjpa.entities.Products;
-import com.educandoweb.springjpa.entities.Productss;
+import com.educandoweb.springjpa.entities.Products;
 import com.educandoweb.springjpa.entities.User;
 import com.educandoweb.springjpa.entities.enums.OrderStatus;
 import com.educandoweb.springjpa.repositories.CategoryRepository;
 import com.educandoweb.springjpa.repositories.OrderRepository;
 import com.educandoweb.springjpa.repositories.ProductsRepository;
-import com.educandoweb.springjpa.repositories.ProductssRepository;
+import com.educandoweb.springjpa.repositories.ProductsRepository;
 import com.educandoweb.springjpa.repositories.UserRepository;
 
 @Configuration
@@ -44,6 +44,22 @@ public class TestConfig implements CommandLineRunner{
 		Category cat3 = new Category(null, "Computers");
 		category.saveAll(Arrays.asList(cat1,cat2,cat3));
 		
+		Products p1 = new Products(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+		Products p2 = new Products(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+		Products p3 = new Products(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+		Products p4 = new Products(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+		Products p5 = new Products(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+		products.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		
+		p1.getCategories().add(cat2);
+		p2.getCategories().add(cat1);
+		p2.getCategories().add(cat3);
+		p3.getCategories().add(cat3);
+		p4.getCategories().add(cat3);
+		p5.getCategories().add(cat2);
+		
+		
+		products.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		
 		
 		User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
@@ -53,15 +69,11 @@ public class TestConfig implements CommandLineRunner{
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"),OrderStatus.WAITTING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.SHIPPED, u1);
 		
-		Products p1 = new Products(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
-		Products p2 = new Products(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
-		Products p3 = new Products(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
-		Products p4 = new Products(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
-		Products p5 = new Products(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+		
 		
 		userReporitory.saveAll(Arrays.asList(u1,u2));
 		repository.saveAll(Arrays.asList(o1,o2,o3));
-		products.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		
 		
 		
 	}
