@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.educandoweb.springjpa.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -23,6 +24,7 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private Integer id;
+	private Integer orderStatus; 
 	private Instant moment; 
 	
 	@ManyToOne
@@ -34,10 +36,11 @@ public class Order implements Serializable {
 		
 	}
 
-	public Order(Integer id, Instant moment, User client) {
+	public Order(Integer id, Instant moment,OrderStatus orderStatus,  User client) {
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
+		setOrderStatus(orderStatus); 
 	}
 
 	public Integer getId() {
@@ -54,6 +57,21 @@ public class Order implements Serializable {
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+	
+	
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		
+		if(orderStatus != null) {
+			
+		this.orderStatus = orderStatus.getCode();
+		
+		}
 	}
 
 	public User getClient() {
