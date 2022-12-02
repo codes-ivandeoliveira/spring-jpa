@@ -1,8 +1,9 @@
 package com.educandoweb.springjpa.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
-
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Category implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
+	private Set <Products> products = new HashSet<>();
 	
 	public Category () {
 		
@@ -61,6 +63,12 @@ public class Category implements Serializable{
 		Category other = (Category) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	public Set <Products> getProducts() {
+		return products;
+	}
+	
+	
 	
 	
 	
