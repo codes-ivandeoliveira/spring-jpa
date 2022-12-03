@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_products")
@@ -31,6 +34,9 @@ public class Products implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "tb_products_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
+	
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrdemItem> items = new HashSet<>();
 
 	public Products() {
 
@@ -87,7 +93,16 @@ public class Products implements Serializable {
 	public Set<Category> getCategories() {
 		return categories;
 	}
-
+	@JsonIgnore
+	public Set <Order> getOrders(){
+		Set <Order> set = new HashSet<>();
+		
+		for(OrdemItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
