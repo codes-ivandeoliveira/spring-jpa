@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.educandoweb.springjpa.entities.pk.OrdemItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_ordemItem")
@@ -17,7 +18,7 @@ public class OrdemItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private OrdemItemPk id;
+	private OrdemItemPk id = new OrdemItemPk();
 	private Integer quantity;
 	private Double price; 
 	
@@ -25,13 +26,14 @@ public class OrdemItem implements Serializable {
 		
 	}
 
-	public OrdemItem(Integer quantity, Double price, Order order, Products product) {
+	public OrdemItem(Order order, Products product,  Integer quantity, Double price ) {
 		id.setOrder(order);
 		id.setProduct(product);
 		this.quantity = quantity;
 		this.price = price;
 	}
-
+	
+	@JsonIgnore
 	public Order getOrder() {
 		
 		return id.getOrder();
