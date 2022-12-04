@@ -17,41 +17,39 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.educandoweb.springjpa.entities.enums.OrderStatus;
- 
+
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+
 	private Integer id;
-	private Integer orderStatus; 
-	private Instant moment; 
-	
+	private Integer orderStatus;
+	private Instant moment;
+
 	@ManyToOne
-	@JoinColumn(name="client_id")
-	
+	@JoinColumn(name = "client_id")
+
 	private User client;
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrdemItem> items = new HashSet<>();
-	
+
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-	
+
 	private Payment payment;
-	
-	
-	
+
 	public Order() {
-		
+
 	}
 
-	public Order(Integer id, Instant moment,OrderStatus orderStatus,  User client) {
+	public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
-		setOrderStatus(orderStatus); 
+		setOrderStatus(orderStatus);
 	}
 
 	public Integer getId() {
@@ -69,19 +67,17 @@ public class Order implements Serializable {
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
-	
-	
 
 	public OrderStatus getOrderStatus() {
 		return OrderStatus.valueOf(orderStatus);
 	}
 
 	public void setOrderStatus(OrderStatus orderStatus) {
-		
-		if(orderStatus != null) {
-			
-		this.orderStatus = orderStatus.getCode();
-		
+
+		if (orderStatus != null) {
+
+			this.orderStatus = orderStatus.getCode();
+
 		}
 	}
 
@@ -92,8 +88,7 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
-		
-	
+
 	public Payment getPayment() {
 		return payment;
 	}
@@ -102,14 +97,26 @@ public class Order implements Serializable {
 		this.payment = payment;
 	}
 
-	public Set <OrdemItem> getItens(){
-		
+	public Set<OrdemItem> getItens() {
+
 		return items;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	public Double getTotal() {
+
+		Double sum = 0.0;
+		for (OrdemItem x : items) {
+
+			sum += x.getSubtotal();
+
+		}
+		
+		return sum;
 	}
 
 	@Override
@@ -123,8 +130,5 @@ public class Order implements Serializable {
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
-	
+
 }

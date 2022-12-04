@@ -42,7 +42,6 @@ public class OrdemItem implements Serializable {
 		id.setOrder(order);
 	}
 
-	
 	public Products getProducts() {
 
 		return id.getProduct();
@@ -66,6 +65,11 @@ public class OrdemItem implements Serializable {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public Double getSubtotal() {
+
+		return price * quantity;
 	}
 
 	@Override
