@@ -3,6 +3,8 @@ package com.educandoweb.springjpa.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.hibernate.loader.plan.exec.process.internal.AbstractRowReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -41,16 +43,21 @@ public class UserService {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
 		}
-catch(DataIntegrityViolationException e)
-		{throw new DatabaseException(e.getMessage());}
 	}
 
 	public User update(Integer id, User obj) {
-
+		try {
 		User ententy = repository.getReferenceById(id);
 		updateData(ententy, obj);
 		return repository.save(ententy);
+		}
+		catch(EntityNotFoundException e) {
+			
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User ententy, User obj) {
